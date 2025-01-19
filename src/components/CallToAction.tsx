@@ -4,16 +4,13 @@ import Link from "next/link"
 
 export default function CallToAction () {
     return (
-        <section className="mb-16">
+        <section id="CTA" className="mb-16">
 
             <div className="text-center px-4">
                 <h2 className="text-3xl font-bold mb-4">Get Started in Minutes</h2>
                 <p className="text-lg text-gray-600 mb-4">
                     Choose one of our powerful tools to begin your translation journey.
                 </p>
-                {/* <Button asChild>
-                    <Link href="#">Explore Tools</Link>
-                </Button> */}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-4xl mx-auto py-8 px-4">

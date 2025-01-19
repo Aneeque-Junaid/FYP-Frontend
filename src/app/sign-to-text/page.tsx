@@ -52,8 +52,8 @@ export default function SignToText() {
   }
 
   return (
-    <div className="flex flex-col items-center space-y-6">
-      <h1 className="text-3xl font-bold">Sign to Text Translator</h1>
+    <div className="flex flex-col items-center pt-8">
+      <h1 className="text-3xl font-bold text-center py-4">Sign to Text Translator</h1>
       <Card className="w-full max-w-3xl">
         <CardHeader>
           <CardTitle>Camera Feed</CardTitle>

@@ -17,7 +17,7 @@ export default function Hero() {
               </p>
               <div className='flex justify-center sm:justify-start'>
                 <Button asChild size="lg">
-                  <Link href="#">Try It Now</Link>
+                  <Link href="#CTA">Try It Now</Link>
                 </Button>
               </div>
             </div>
