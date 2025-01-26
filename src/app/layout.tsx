@@ -1,30 +1,31 @@
-import './globals.css'
-import { Inter } from 'next/font/google'
-import { Navbar } from "@/components/Navbar"
-import Footer from '@/components/Footer'
+import "./globals.css";
+import { Inter } from "next/font/google";
+import { Navbar } from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'Sign Language Translator',
-  description: 'A modern web app for translating between sign language and text',
-}
+  title: "Sign Language Translator",
+  description:
+    "A modern web app for translating between sign language and text",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-            <Navbar/>
-              <div className='min-h-[90vh]'>
-                {children}
-              </div>
-            <Footer />
+        <GoogleOAuthProvider clientId="1092107067426-ru4r1hr167uib2tdd10g2v62j4cpu5fh.apps.googleusercontent.com">
+          <Navbar />
+          <div className="min-h-[90vh]">{children}</div>
+          <Footer />
+        </GoogleOAuthProvider>
       </body>
     </html>
-  )
+  );
 }
-
