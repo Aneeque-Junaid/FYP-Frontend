@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Select from "@/components/Select";
+import { useRouter } from "next/navigation";
 
 const LANGUAGES = [
   { value: "ASL", label: "ASL" },
@@ -23,6 +24,7 @@ export default function SignToText() {
   const streamRef = useRef<MediaStream | null>(null);
 
   /* STATES */
+  const router = useRouter();
   const [score, setScore] = useState(0);
   const [prediction, setPrediction] = useState("");
   // const [isRecording, setIsRecording] = useState(false);
@@ -201,6 +203,11 @@ export default function SignToText() {
 
   /* ***** EFFECTS ***** */
   useEffect(() => {
+    if (!localStorage.getItem("jwt") || !localStorage.getItem("user"))
+      router.push("/login");
+  }, []);
+
+  useEffect(() => {
     return () => {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
@@ -217,8 +224,8 @@ export default function SignToText() {
   useEffect(() => {
     ws.current = new WebSocket(
       selectedLanguage.localeCompare("ASL") === 0
-        ? "ws://localhost:8000/ws"
-        : "ws://localhost:8000/ws/arabic"
+        ? "wss://api-model-yho2.onrender.com/ws"
+        : "wss://api-model-yho2.onrender.com/ws/arabic"
     );
 
     ws.current.onopen = () => console.log("WebSocket connection established");
@@ -235,7 +242,7 @@ export default function SignToText() {
 
   /* ***** TIMER EFFECT ***** */
   useEffect(() => {
-    if (!videoRef.current || !ws) {
+    if (!videoRef.current?.srcObject || !ws) {
       console.log(
         "Camera not ready yet or WebSocket connection not established"
       );

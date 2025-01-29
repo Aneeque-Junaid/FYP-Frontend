@@ -1,11 +1,17 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { fetchSignVideos } from '../utils/api'
-
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { fetchSignVideos } from "../utils/api";
+import { useRouter } from "next/navigation";
 
 interface Video {
   word: string;
@@ -13,29 +19,35 @@ interface Video {
 }
 
 export default function TextToSign() {
-  const [inputText, setInputText] = useState('')
-  const [signVideos, setSignVideos] = useState<Video[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const router = useRouter();
+  const [inputText, setInputText] = useState("");
+  const [signVideos, setSignVideos] = useState<Video[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleTranslate = async () => {
     if (!inputText.trim()) {
-      setError('Please enter some text to translate.')
-      return
+      setError("Please enter some text to translate.");
+      return;
     }
 
-    setLoading(true)
-    setError('')
+    setLoading(true);
+    setError("");
 
     try {
-      const videos = await fetchSignVideos(inputText)
-      setSignVideos(videos)
+      const videos = await fetchSignVideos(inputText);
+      setSignVideos(videos);
     } catch (err: any) {
-      setError(err.message || 'Something went wrong.')
+      setError(err.message || "Something went wrong.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+  useEffect(() => {
+    if (!localStorage.getItem("user") || !localStorage.getItem("jwt"))
+      router.push("/login");
+  }, []);
 
   return (
     <div className="flex flex-col items-center space-y-6">
@@ -44,7 +56,9 @@ export default function TextToSign() {
       <Card className="w-full max-w-4xl">
         <CardHeader>
           <CardTitle>Enter Text</CardTitle>
-          <CardDescription>Type the text you want to translate to sign language</CardDescription>
+          <CardDescription>
+            Type the text you want to translate to sign language
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col space-y-4">
           <Input
@@ -53,7 +67,7 @@ export default function TextToSign() {
             onChange={(e) => setInputText(e.target.value)}
           />
           <Button onClick={handleTranslate} disabled={loading}>
-            {loading ? 'Translating...' : 'Translate to Sign'}
+            {loading ? "Translating..." : "Translate to Sign"}
           </Button>
           {error && <p className="text-red-500 text-sm">{error}</p>}
         </CardContent>
@@ -67,8 +81,8 @@ export default function TextToSign() {
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {signVideos.map((video, index) => (
-                <div>
-                  <p className='text-center text-xl'>{video.word}</p>
+                <div key={index}>
+                  <p className="text-center text-xl">{video.word}</p>
                   <video
                     key={index}
                     src={video.video_url}
@@ -82,6 +96,5 @@ export default function TextToSign() {
         </Card>
       )}
     </div>
-  )
+  );
 }
-
