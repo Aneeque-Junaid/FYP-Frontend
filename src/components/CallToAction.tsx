@@ -12,6 +12,21 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Camera, Type } from "lucide-react";
 
+interface ToolCardProps {
+  title: string;
+  description: string;
+  href: string;
+  buttonText: string;
+  icon: React.ReactNode;
+}
+
+interface AnimatedButtonProps {
+  href: string;
+  text: string;
+  variant: "default" | "outline" | "ghost" | "link";
+  className?: string;
+}
+
 export default function CallToAction() {
   return (
     <section className="relative overflow-hidden mb-16 py-24 bg-black text-white">
@@ -30,7 +45,8 @@ export default function CallToAction() {
             Empower your conversations with our cutting-edge translation tools.
             Start your journey to seamless communication today.
           </p>
-          <AnimatedButton href="#tools" text="Explore Tools" />
+          <AnimatedButton href="#tools" text="Explore Tools" variant="default"
+            className="bg-white text-black hover:bg-gray-100" />
         </motion.div>
 
         <motion.div
@@ -81,7 +97,7 @@ const itemVariants = {
   },
 };
 
-function ToolCard({ title, description, href, buttonText, icon }) {
+function ToolCard({ title, description, href, buttonText, icon }: ToolCardProps) {
   return (
     <motion.div variants={itemVariants}>
       <Card className="overflow-hidden h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-white text-black border-2 border-black group">
@@ -107,7 +123,7 @@ function ToolCard({ title, description, href, buttonText, icon }) {
   );
 }
 
-function AnimatedButton({ href, text, variant, className }) {
+function AnimatedButton({ href, text, variant, className }: AnimatedButtonProps) {
   return (
     <Button
       asChild
