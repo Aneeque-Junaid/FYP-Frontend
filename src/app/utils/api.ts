@@ -1,4 +1,4 @@
-export const fetchSignVideos = async (sentence: String) => {
+export const fetchSignVideos = async (sentence: string) => {
   try {
     const response = await fetch(
       `https://sign-language-backend-afshal1-afshal1s-projects.vercel.app/api/sign/get-videos`,
@@ -17,7 +17,7 @@ export const fetchSignVideos = async (sentence: String) => {
 
     const data = await response.json();
     return data.data;
-  } catch (err: any) {
-    throw new Error(err.message || "Something went wrong.");
+  } catch (err: unknown) {
+    throw new Error(err instanceof Error ? err.message : "Something went wrong.");
   }
 };

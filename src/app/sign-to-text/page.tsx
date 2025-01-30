@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -115,23 +115,21 @@ export default function SignToText() {
     }
   };
 
-  const generateQuestions = () => {
+  const generateQuestions = useCallback(() => {
     const weightedQuestions = questionPool.flatMap(({ word, probability }) =>
       Array(Math.floor(probability * 100)).fill(word)
     );
     const shuffled = weightedQuestions.toSorted(() => 0.5 - Math.random());
-
     return shuffled.slice(0, 5);
-  };
-
-  const generateArabicQuestions = () => {
+  }, [questionPool]);
+  
+  const generateArabicQuestions = useCallback(() => {
     const weightedQuestions = arabicQuesions.flatMap(({ word, probability }) =>
       Array(Math.floor(probability * 100)).fill(word)
     );
     const shuffled = weightedQuestions.toSorted(() => 0.5 - Math.random());
-
     return shuffled.slice(0, 5);
-  };
+  }, [arabicQuesions]);
 
   const handleSelectLanguage = (value: string) => {
     setSelectedLanguage(value);
@@ -205,7 +203,7 @@ export default function SignToText() {
   useEffect(() => {
     if (!localStorage.getItem("jwt") || !localStorage.getItem("user"))
       router.push("/login");
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     return () => {
@@ -271,7 +269,7 @@ export default function SignToText() {
         : generateArabicQuestions();
     setQuestions(gameQuestions);
     setCurrentQuestion(gameQuestions[0]);
-  }, [selectedLanguage]);
+  }, [selectedLanguage,generateQuestions, generateArabicQuestions]);
 
   // router.push(`/certificate/${"afshal"}/${100}`);
 
@@ -292,7 +290,7 @@ export default function SignToText() {
         setIsPredictionCorrect(true);
       }
     }
-  }, [prediction, currentQuestion, isPredictionCorrect]);
+  }, [prediction, currentQuestion, isPredictionCorrect, score, router]);
 
   /* ***** SEND FRAME EFFECT ***** */
   useEffect(() => {

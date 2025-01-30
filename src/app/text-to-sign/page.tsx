@@ -38,8 +38,9 @@ export default function TextToSign() {
     try {
       const videos = await fetchSignVideos(inputText);
       setSignVideos(videos);
-    } catch (err: any) {
-      setError(err.message || "Something went wrong.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Something went wrong.";
+      setError(errorMessage);
       setSignVideos([]);
     } finally {
       setLoading(false);
@@ -49,7 +50,7 @@ export default function TextToSign() {
   useEffect(() => {
     if (!localStorage.getItem("user") || !localStorage.getItem("jwt"))
       router.push("/login");
-  }, []);
+  }, [router]);
 
   return (
     <div className="flex flex-col items-center pt-8">

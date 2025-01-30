@@ -27,7 +27,7 @@ export default function CertificatePage() {
     <div className="flex flex-col items-center space-y-6 py-8">
       <h1 className="text-4xl font-bold text-center">🎉 Congratulations! 🎉</h1>
       <p className="text-center text-lg text-muted-foreground">
-        You've successfully completed the quiz. Your efforts deserve
+        You&apos;ve successfully completed the quiz. Your efforts deserve
         recognition!
       </p>
       <Card className="w-full max-w-2xl">
