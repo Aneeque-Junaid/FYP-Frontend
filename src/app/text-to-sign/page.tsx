@@ -33,12 +33,14 @@ export default function TextToSign() {
 
     setLoading(true);
     setError("");
+    setSignVideos([]);
 
     try {
       const videos = await fetchSignVideos(inputText);
       setSignVideos(videos);
     } catch (err: any) {
       setError(err.message || "Something went wrong.");
+      setSignVideos([]);
     } finally {
       setLoading(false);
     }

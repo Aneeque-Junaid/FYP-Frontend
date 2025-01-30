@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import heroImage from "@/assets/hero-image.png";
 
 export default function Hero() {
   return (
@@ -68,7 +69,7 @@ export default function Hero() {
                 size="lg"
                 className="bg-white hover:bg-gray-200 text-black font-semibold py-4 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
-                <Link href="#" className="flex items-center">
+                <Link href="#tools" className="flex items-center">
                   Try It Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -89,16 +90,16 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="relative">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-white to-gray-600 rounded-2xl blur opacity-30"></div>
+              {/* <div className="absolute -inset-0.5 bg-gradient-to-r from-white to-gray-600 rounded-2xl blur opacity-30"></div> */}
               <div className="relative">
                 <Image
-                  src="/placeholder.svg?height=600&width=600"
+                  src={heroImage}
                   alt="Sign Language Illustration"
                   width={600}
                   height={600}
-                  className="rounded-2xl shadow-2xl w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] object-cover"
+                  className="rounded-2xl shadow-2xl w-[350px] h-[350px] sm:w-full sm:h-full object-contain"
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent rounded-2xl" />
+                {/* <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent rounded-2xl" /> */}
               </div>
             </div>
           </motion.div>

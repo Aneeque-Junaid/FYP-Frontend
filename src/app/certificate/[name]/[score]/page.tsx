@@ -17,7 +17,7 @@ export default function CertificatePage() {
   const handleGenerateCertificate = () => {
     const numericScore = Number(score);
     if (!isNaN(numericScore)) {
-      generateCertificate(name, numericScore);
+      generateCertificate(String(name), numericScore);
     } else {
       console.error("Invalid score:", score);
     }

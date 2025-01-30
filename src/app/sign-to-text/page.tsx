@@ -273,7 +273,7 @@ export default function SignToText() {
     setCurrentQuestion(gameQuestions[0]);
   }, [selectedLanguage]);
 
-  router.push(`/certificate/${"afshal"}/${100}`);
+  // router.push(`/certificate/${"afshal"}/${100}`);
 
   /* ***** GETTING PREDICTION EFFECT ***** */
   useEffect(() => {
@@ -334,7 +334,7 @@ export default function SignToText() {
         </div>
       </div>
 
-      <div className="w-[60%] h-[300px] aspect-video bg-muted rounded-lg overflow-hidden">
+      <div className="w-[80%] h-[500px] aspect-video bg-muted rounded-lg overflow-hidden">
         <video
           ref={videoRef}
           autoPlay
