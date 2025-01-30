@@ -273,11 +273,20 @@ export default function SignToText() {
     setCurrentQuestion(gameQuestions[0]);
   }, [selectedLanguage]);
 
+  router.push(`/certificate/${"afshal"}/${100}`);
+
   /* ***** GETTING PREDICTION EFFECT ***** */
   useEffect(() => {
     if (prediction && currentQuestion && !isPredictionCorrect) {
       if (prediction === currentQuestion) {
         setScore((prev) => prev + 1);
+
+        if (score === 4) {
+          const { user } = JSON.parse(localStorage.getItem("user") ?? "{}");
+          if (user) {
+            router.push(`/certificate/${user.name}/${score}`);
+          }
+        }
         setIsNextEnabled(true);
         setIsTimerActive(false);
         setIsPredictionCorrect(true);

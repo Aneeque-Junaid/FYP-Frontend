@@ -23,7 +23,7 @@ export default function Hero() {
                 AI-Powered Translation
               </span>
             </div>
-            <h1 className="text-4xl sm:text-4xl lg:text-5xl font-extrabold mb-6 leading-tight mb-[35px]">
+            <h1 className="text-4xl sm:text-4xl lg:text-5xl font-extrabold mb-8 leading-tight">
               Break Down <br />
               <span className="text-gray-300 relative">
                 Language Barriers

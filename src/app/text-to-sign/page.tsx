@@ -50,8 +50,10 @@ export default function TextToSign() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center space-y-6">
-      <h1 className="text-3xl font-bold">Text to Sign Translator</h1>
+    <div className="flex flex-col items-center pt-8">
+      <h1 className="text-3xl font-bold text-center py-4">
+        Text to Sign Translator
+      </h1>
 
       <Card className="w-full max-w-4xl">
         <CardHeader>
@@ -82,13 +84,21 @@ export default function TextToSign() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {signVideos.map((video, index) => (
                 <div key={index}>
-                  <p className="text-center text-xl">{video.word}</p>
-                  <video
-                    key={index}
-                    src={video.video_url}
-                    controls
-                    className="w-full aspect-square object-cover rounded-lg"
-                  />
+                  <p className="text-center text-xl mb-4">{video.word}</p>
+                  {video.video_url ? (
+                    <video
+                      src={video.video_url}
+                      controls
+                      className="w-full aspect-square object-cover rounded-lg"
+                    />
+                  ) : (
+                    <div className="text-center">
+                      <p className="text-xl font-semibold mb-2">
+                        Video Not Found
+                      </p>
+                      <p>The word is not available in our dictionary</p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
