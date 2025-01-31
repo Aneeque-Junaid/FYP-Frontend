@@ -17,7 +17,7 @@ export default function CertificatePage() {
   const handleGenerateCertificate = () => {
     const numericScore = Number(score);
     if (!isNaN(numericScore)) {
-      generateCertificate(String(name), numericScore);
+      generateCertificate(decodeURIComponent(String(name)), numericScore);
     } else {
       console.error("Invalid score:", score);
     }
@@ -40,7 +40,7 @@ export default function CertificatePage() {
         <CardContent className="flex flex-col items-center space-y-4">
           <div className="bg-muted w-full rounded-lg p-6 text-center">
             <p className="text-lg font-medium">
-              Name: <span className="font-semibold">{name}</span>
+              Name: <span className="font-semibold">{decodeURIComponent(String(name))}</span>
             </p>
             <p className="text-lg font-medium">
               Score: <span className="font-semibold">{score}%</span>

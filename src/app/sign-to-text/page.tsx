@@ -230,9 +230,10 @@ export default function SignToText() {
         setScore((prev) => prev + 1);
 
         if (score === 4) {
+          const percentageScore = Math.round((score / 5) * 100);
           const { user } = JSON.parse(localStorage.getItem("user") ?? "{}");
           if (user) {
-            router.push(`/certificate/${user.name}/${score}`);
+            router.push(`/certificate/${user.name}/${percentageScore}`);
           }
         }
         setIsNextEnabled(true);
