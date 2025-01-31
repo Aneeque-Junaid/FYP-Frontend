@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/card";
 import Select from "@/components/Select";
 import { useRouter } from "next/navigation";
+import { arabicQuesions, questionPool } from "./data";
+import { promptToAI } from "../utils/api";
 
 const LANGUAGES = [
   { value: "ASL", label: "ASL" },
@@ -37,68 +39,7 @@ export default function SignToText() {
   const [isPredictionCorrect, setIsPredictionCorrect] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<string | null>("");
   const [selectedLanguage, setSelectedLanguage] = useState(LANGUAGES[0].value);
-
-  /* ADDITIONAL STATES */
-  const questionPool = [
-    { word: "A", probability: 0.6 },
-    { word: "B", probability: 0.6 },
-    { word: "C", probability: 0.4 },
-    { word: "E", probability: 0.4 },
-    { word: "G", probability: 0.2 },
-    { word: "H", probability: 0.2 },
-    { word: "I", probability: 0.5 },
-    { word: "J", probability: 0.5 },
-    { word: "K", probability: 0.3 },
-    { word: "L", probability: 0.8 },
-    { word: "O", probability: 0.4 },
-    { word: "R", probability: 0.3 },
-    { word: "S", probability: 0.4 },
-    { word: "T", probability: 0.3 },
-    { word: "U", probability: 0.2 },
-    { word: "V", probability: 0.3 },
-    { word: "W", probability: 0.5 },
-    { word: "X", probability: 0.3 },
-    { word: "Y", probability: 0.6 },
-    { word: "Thank you", probability: 0.7 },
-    { word: "Sorry", probability: 0.2 },
-    { word: "Please", probability: 0.4 },
-    { word: "Hello", probability: 0.8 },
-    { word: "I / Me", probability: 0.4 },
-    { word: "Us", probability: 0.6 },
-    { word: "My", probability: 0.7 },
-    { word: "Do", probability: 0.4 },
-    { word: "Go", probability: 0.2 },
-    { word: "Busy", probability: 0.5 },
-    { word: "Food", probability: 0.5 },
-  ];
-
-  const arabicQuesions = [
-    { word: "ع", probability: 0.7 },
-    { word: "ال", probability: 0.7 },
-    { word: "ا", probability: 0.6 },
-    { word: "ب", probability: 0.6 },
-    { word: "ض", probability: 0.3 },
-    { word: "د", probability: 0.3 },
-    { word: "ف", probability: 0.6 },
-    { word: "ح", probability: 0.2 },
-    { word: "ه", probability: 0.2 },
-    { word: "ج", probability: 0.2 },
-    { word: "خ", probability: 0.3 },
-    { word: "لا", probability: 0.6 },
-    { word: "ل", probability: 0.4 },
-    { word: "م", probability: 0.7 },
-    { word: "ن", probability: 0.8 },
-    { word: "ق", probability: 0.7 },
-    { word: "ر", probability: 0.7 },
-    { word: "ص", probability: 0.5 },
-    { word: "س", probability: 0.5 },
-    { word: "ش", probability: 0.6 },
-    { word: "ط", probability: 0.4 },
-    { word: "ذ", probability: 0.5 },
-    { word: "ث", probability: 0.1 },
-    { word: "ي", probability: 0.1 },
-    { word: "ز", probability: 0.8 },
-  ];
+  const [aiSuggestions, setAISuggestions] = useState("");
 
   const timerPercentage = (timeLeft / 120) * 100;
 
@@ -115,21 +56,21 @@ export default function SignToText() {
     }
   };
 
-  const generateQuestions = useCallback(() => {
+  const generateQuestions = () => {
     const weightedQuestions = questionPool.flatMap(({ word, probability }) =>
       Array(Math.floor(probability * 100)).fill(word)
     );
     const shuffled = weightedQuestions.toSorted(() => 0.5 - Math.random());
     return shuffled.slice(0, 5);
-  }, [questionPool]);
-  
-  const generateArabicQuestions = useCallback(() => {
+  };
+
+  const generateArabicQuestions = () => {
     const weightedQuestions = arabicQuesions.flatMap(({ word, probability }) =>
       Array(Math.floor(probability * 100)).fill(word)
     );
     const shuffled = weightedQuestions.toSorted(() => 0.5 - Math.random());
     return shuffled.slice(0, 5);
-  }, [arabicQuesions]);
+  };
 
   const handleSelectLanguage = (value: string) => {
     setSelectedLanguage(value);
@@ -203,7 +144,7 @@ export default function SignToText() {
   useEffect(() => {
     if (!localStorage.getItem("jwt") || !localStorage.getItem("user"))
       router.push("/login");
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -217,6 +158,15 @@ export default function SignToText() {
   useEffect(() => {
     startCamera();
   }, []);
+
+  useEffect(() => {
+    if (currentQuestion)
+      promptToAI(currentQuestion || "", selectedLanguage)
+        .then((response) =>
+          setAISuggestions(response.choices[0].message.content)
+        )
+        .catch((error) => console.log(error));
+  }, [currentQuestion]);
 
   /* ***** SOCKET EFFECT ***** */
   useEffect(() => {
@@ -269,7 +219,7 @@ export default function SignToText() {
         : generateArabicQuestions();
     setQuestions(gameQuestions);
     setCurrentQuestion(gameQuestions[0]);
-  }, [selectedLanguage,generateQuestions, generateArabicQuestions]);
+  }, [selectedLanguage]);
 
   // router.push(`/certificate/${"afshal"}/${100}`);
 
@@ -290,7 +240,7 @@ export default function SignToText() {
         setIsPredictionCorrect(true);
       }
     }
-  }, [prediction, currentQuestion, isPredictionCorrect, score, router]);
+  }, [prediction, currentQuestion, isPredictionCorrect]);
 
   /* ***** SEND FRAME EFFECT ***** */
   useEffect(() => {
@@ -373,6 +323,12 @@ export default function SignToText() {
           >
             Next Question
           </Button>
+          {aiSuggestions && isNextEnabled === true && (
+            <div className="text-[13px] text-center text-gray-900">
+              <span className="font-semibold">AI Suggestions:</span>{" "}
+              {aiSuggestions}
+            </div>
+          )}
         </CardContent>
       </Card>
 
