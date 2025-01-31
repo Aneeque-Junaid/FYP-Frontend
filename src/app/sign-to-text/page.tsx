@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -73,6 +73,8 @@ export default function SignToText() {
   };
 
   const handleSelectLanguage = (value: string) => {
+    setScore(0);
+    setIsNextEnabled(false);
     setSelectedLanguage(value);
   };
 
@@ -324,7 +326,7 @@ export default function SignToText() {
           >
             Next Question
           </Button>
-          {aiSuggestions && isNextEnabled === true && (
+          {aiSuggestions && (
             <div className="text-[13px] text-center text-gray-900">
               <span className="font-semibold">AI Suggestions:</span>{" "}
               {aiSuggestions}

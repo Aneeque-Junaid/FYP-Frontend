@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +10,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import generateCertificate from "@/app/utils/generateCertificate";
+import { useEffect } from "react";
 
 export default function CertificatePage() {
+  const router = useRouter();
   const { name, score } = useParams();
 
   const handleGenerateCertificate = () => {
@@ -22,6 +24,11 @@ export default function CertificatePage() {
       console.error("Invalid score:", score);
     }
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem("user") || !localStorage.getItem("jwt"))
+      router.push("/login");
+  }, []);
 
   return (
     <div className="flex flex-col items-center space-y-6 py-8">
@@ -40,7 +47,10 @@ export default function CertificatePage() {
         <CardContent className="flex flex-col items-center space-y-4">
           <div className="bg-muted w-full rounded-lg p-6 text-center">
             <p className="text-lg font-medium">
-              Name: <span className="font-semibold">{decodeURIComponent(String(name))}</span>
+              Name:{" "}
+              <span className="font-semibold">
+                {decodeURIComponent(String(name))}
+              </span>
             </p>
             <p className="text-lg font-medium">
               Score: <span className="font-semibold">{score}%</span>
