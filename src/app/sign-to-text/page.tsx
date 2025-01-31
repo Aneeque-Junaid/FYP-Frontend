@@ -190,7 +190,7 @@ export default function SignToText() {
 
   /* ***** TIMER EFFECT ***** */
   useEffect(() => {
-    if (!videoRef.current?.srcObject || !ws) {
+    if (!videoRef.current || !ws) {
       console.log(
         "Camera not ready yet or WebSocket connection not established"
       );
