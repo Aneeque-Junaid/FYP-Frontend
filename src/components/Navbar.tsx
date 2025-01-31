@@ -70,7 +70,7 @@ export function Navbar() {
       </div>
 
       {isMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white shadow-md border-t border-gray-200 md:hidden z-10">
+        <div className="absolute top-16 left-0 w-full bg-white shadow-md border-t border-gray-200 md:hidden z-50">
           <div className="flex flex-col items-center gap-4 py-4">
             <Link
               href="/"
@@ -102,7 +102,7 @@ export function Navbar() {
             >
               Text to Sign
             </Link>
-            <Link
+            {/* <Link
               href="/certificate"
               onClick={() => setIsMenuOpen(false)}
               className={cn(
@@ -111,7 +111,7 @@ export function Navbar() {
               )}
             >
               Certificate
-            </Link>
+            </Link> */}
           </div>
         </div>
       )}
