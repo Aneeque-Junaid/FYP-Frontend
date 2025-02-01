@@ -20,7 +20,7 @@ export default function SignIn() {
     onSuccess: (tokenResponse) => {
       console.log(tokenResponse);
       axios
-        .post("https://chatapp-backend-5tbb.onrender.com/api/auth/login", {
+        .post("https://sign-language-backend-afshal1-afshal1s-projects.vercel.app/api/auth/login", {
           accessToken: tokenResponse.access_token,
         })
         .then((res) => {
