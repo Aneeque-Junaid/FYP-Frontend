@@ -20,7 +20,7 @@ export default function SignIn() {
     onSuccess: (tokenResponse) => {
       console.log(tokenResponse);
       axios
-        .post("https://chatapp-backend-5tbb.onrender.com/auth", {
+        .post("https://chatapp-backend-5tbb.onrender.com/api/auth/login", {
           accessToken: tokenResponse.access_token,
         })
         .then((res) => {
